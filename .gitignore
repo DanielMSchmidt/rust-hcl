@@ -1,0 +1,8 @@
+/target/
+**/*.rs.bk
+
+# Local cross-repo dev wiring: redirects the git dependency at a sibling working copy.
+# Never commit this — CI has no sibling checkout. Commit the .example instead.
+/.cargo/config.toml
+
+.DS_Store

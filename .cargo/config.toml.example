@@ -1,0 +1,6 @@
+# Copy to .cargo/config.toml (gitignored) to build against a local cty working copy
+# instead of the pinned git tag.  `mise run link-local` in the workbench does this for you.
+#
+# The patch key is the repository URL, not the crate name.
+[patch."https://github.com/DanielMSchmidt/rust-cty"]
+cty = { path = "../cty" }

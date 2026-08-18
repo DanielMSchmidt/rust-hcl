@@ -1,0 +1,39 @@
+[workspace]
+# Own workspace: this repo is independent of the terraform-rewrite workbench it sits inside.
+
+[package]
+name = "hcl"
+version = "0.1.0"
+description = "A Rust implementation of HashiCorp Configuration Language v2"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+repository = "https://github.com/DanielMSchmidt/rust-hcl"
+publish = false
+
+[dependencies]
+# No tag or branch: Cargo tracks rust-cty's default branch and records the exact commit in
+# Cargo.lock, which is committed. So this is pinned in practice — it moves only when you run
+# `cargo update -p cty`, never on its own. That avoids a tag bump on every cross-crate
+# change, which is the main tax of keeping the two crates in separate repos.
+#
+# Any other repo depending on cty must use this EXACT same spec. Cargo keys git sources on
+# the dependency spec, so mixing this with a `tag =` or `branch =` variant yields two
+# `cty::Value` types that are not the same type.
+#
+# For local development against ../cty, see .cargo/config.toml.example (mise run link-local).
+cty = { git = "https://github.com/DanielMSchmidt/rust-cty" }
+
+[dev-dependencies]
+
+[lints.rust]
+missing_docs = "warn"
+unsafe_code = "deny"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+todo = "allow"
+unimplemented = "allow"
+
+[profile.bench]
+debug = true

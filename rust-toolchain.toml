@@ -1,0 +1,6 @@
+# Must match the `rust` pin in the terraform-rewrite workbench's mise.toml.
+# This file exists so a standalone clone (and CI) gets the right toolchain without mise.
+# `mise run check` verifies the two agree.
+[toolchain]
+channel = "1.97.1"
+components = ["rustfmt", "clippy", "rust-src"]
