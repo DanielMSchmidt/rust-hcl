@@ -1,6 +1,20 @@
-# Copy to .cargo/config.toml (gitignored) to build against a local cty working copy
-# instead of the pinned git tag.  `mise run link-local` in the workbench does this for you.
+# Copy to .cargo/config.toml (gitignored) to build against the local ../cty working copy
+# instead of the commit pinned in Cargo.lock.  `mise run link-local` does this for you.
 #
-# The patch key is the repository URL, not the crate name.
-[patch."https://github.com/DanielMSchmidt/rust-cty"]
-cty = { path = "../cty" }
+# A path override, unlike a [patch], does NOT rewrite Cargo.lock — so there is no risk of
+# committing a lockfile that points at your machine. Overridden deps simply do not appear
+# in the lockfile while the override is active.
+#
+# Note: the path must exist, or cargo errors out. That is why this file is not committed
+# as-is; CI has no sibling checkout.
+paths = ["../cty"]
+
+# Fallback. Cargo's docs describe path overrides as unable to change the dependency graph
+# and as intended for crates.io packages only — neither of which matches this setup, even
+# though it works on 1.97. If a future Cargo enforces those limits, switch to this:
+#
+# [patch."https://github.com/DanielMSchmidt/rust-cty"]
+# cty = { path = "../cty" }
+#
+# [patch] DOES rewrite Cargo.lock (it drops the `source =` line), so if you switch, do not
+# commit Cargo.lock while linked.
