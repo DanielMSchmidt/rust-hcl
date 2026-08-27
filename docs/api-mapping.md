@@ -230,6 +230,12 @@ derives fully parse and validate this grammar but emit `todo!()` bodies.
 | `hcl:",remain"` | `#[hcl(remain)]` | leftover body (field of type `BodyRef` or `Attributes`) |
 | `hcl:",body"` | `#[hcl(body)]` | the whole body (field of type `BodyRef`) |
 | `hcl:",range"` | `#[hcl(range)]` | the body/block's range (field of type `Range`) |
+| `hcl:"name,label_range"` | `#[hcl(label_range = "name")]` | the named label's range (field of type `Range`) |
+| `hcl:",def_range"` | `#[hcl(def_range)]` | the block's definition range (field of type `Range`) |
+| `hcl:",type_range"` | `#[hcl(type_range)]` | the block's type-name range (field of type `Range`) |
+| `hcl:"name,attr_range"` | `#[hcl(attr_range = "name")]` | the named attribute's range (field of type `Range`) |
+| `hcl:"name,attr_name_range"` | `#[hcl(attr_name_range = "name")]` | the named attribute's name range (field of type `Range`) |
+| `hcl:"name,attr_value_range"` | `#[hcl(attr_value_range = "name")]` | the named attribute's value-expression range (field of type `Range`) |
 | — | `#[hcl(optional)]` | shorthand for `#[hcl(attr = "<field name>", optional)]` |
 | untagged field | no attribute | ignored, as gohcl ignores untagged fields |
 

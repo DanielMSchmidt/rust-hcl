@@ -14,7 +14,7 @@ use crate::diagnostic::Diagnostics;
 use crate::eval_context::EvalContext;
 use crate::hclwrite;
 use crate::schema::BodySchema;
-use crate::structure::{Body, Expression};
+use crate::structure::{Attributes, Body, ExprRef, Expression};
 
 /// A type that can be decoded from an HCL body, normally via
 /// `#[derive(FromBody)]` (gohcl: the struct shapes accepted by
@@ -28,6 +28,55 @@ pub trait FromBody: Sized {
     /// The schema this type implies, and whether it is partial (has a
     /// `remain` field) (gohcl: `gohcl.ImpliedBodySchema`).
     fn implied_body_schema() -> (BodySchema, bool);
+}
+
+/// Decoding a body's attributes into a map of expression-decoded values
+/// (gohcl: `decodeBodyToMap` via `JustAttributes`; `implied_body_schema`
+/// panics, as Go's `ImpliedBodySchema` does for non-struct targets).
+impl FromBody for std::collections::HashMap<String, String> {
+    fn from_body(body: &dyn Body, ctx: Option<&EvalContext>) -> (Self, Diagnostics) {
+        todo!()
+    }
+
+    fn implied_body_schema() -> (BodySchema, bool) {
+        todo!()
+    }
+}
+
+/// Decoding a body's attributes into a map of [`Value`]s
+/// (gohcl: `decodeBodyToMap` via `JustAttributes`).
+impl FromBody for std::collections::HashMap<String, Value> {
+    fn from_body(body: &dyn Body, ctx: Option<&EvalContext>) -> (Self, Diagnostics) {
+        todo!()
+    }
+
+    fn implied_body_schema() -> (BodySchema, bool) {
+        todo!()
+    }
+}
+
+/// Decoding a body's attributes as-is (gohcl: `decodeBodyToMap`'s
+/// `map[string]*hcl.Attribute` special case).
+impl FromBody for Attributes {
+    fn from_body(body: &dyn Body, ctx: Option<&EvalContext>) -> (Self, Diagnostics) {
+        todo!()
+    }
+
+    fn implied_body_schema() -> (BodySchema, bool) {
+        todo!()
+    }
+}
+
+/// Decoding a body's attribute expressions unevaluated (gohcl:
+/// `decodeBodyToMap`'s `map[string]hcl.Expression` special case).
+impl FromBody for std::collections::HashMap<String, ExprRef> {
+    fn from_body(body: &dyn Body, ctx: Option<&EvalContext>) -> (Self, Diagnostics) {
+        todo!()
+    }
+
+    fn implied_body_schema() -> (BodySchema, bool) {
+        todo!()
+    }
 }
 
 /// A type that can be encoded into an `hclwrite` body, normally via

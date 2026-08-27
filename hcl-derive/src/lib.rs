@@ -13,6 +13,12 @@
 //! | `hcl:",remain"`      | `#[hcl(remain)]`                |
 //! | `hcl:",body"`        | `#[hcl(body)]`                  |
 //! | `hcl:",range"`       | `#[hcl(range)]`                 |
+//! | `hcl:"name,label_range"` | `#[hcl(label_range = "name")]` |
+//! | `hcl:",def_range"`   | `#[hcl(def_range)]`             |
+//! | `hcl:",type_range"`  | `#[hcl(type_range)]`            |
+//! | `hcl:"name,attr_range"` | `#[hcl(attr_range = "name")]` |
+//! | `hcl:"name,attr_name_range"` | `#[hcl(attr_name_range = "name")]` |
+//! | `hcl:"name,attr_value_range"` | `#[hcl(attr_value_range = "name")]` |
 //!
 //! `#[hcl(optional)]` on its own is shorthand for
 //! `#[hcl(attr = "<field name>", optional)]`. Fields without an `#[hcl(...)]`
@@ -35,6 +41,12 @@ enum FieldKind {
     Remain,
     Body,
     Range,
+    LabelRange,
+    DefRange,
+    TypeRange,
+    AttrRange,
+    AttrNameRange,
+    AttrValueRange,
 }
 
 /// One parsed `#[hcl(...)]` field annotation.
@@ -79,19 +91,41 @@ fn parse_field_attrs(field: &syn::Field) -> syn::Result<Option<FieldSpec>> {
                 set_kind(&mut kind, FieldKind::Label)?;
                 name = Some(meta.value()?.parse::<syn::LitStr>()?.value());
                 Ok(())
+            } else if meta.path.is_ident("label_range") {
+                set_kind(&mut kind, FieldKind::LabelRange)?;
+                name = Some(meta.value()?.parse::<syn::LitStr>()?.value());
+                Ok(())
+            } else if meta.path.is_ident("attr_range") {
+                set_kind(&mut kind, FieldKind::AttrRange)?;
+                name = Some(meta.value()?.parse::<syn::LitStr>()?.value());
+                Ok(())
+            } else if meta.path.is_ident("attr_name_range") {
+                set_kind(&mut kind, FieldKind::AttrNameRange)?;
+                name = Some(meta.value()?.parse::<syn::LitStr>()?.value());
+                Ok(())
+            } else if meta.path.is_ident("attr_value_range") {
+                set_kind(&mut kind, FieldKind::AttrValueRange)?;
+                name = Some(meta.value()?.parse::<syn::LitStr>()?.value());
+                Ok(())
             } else if meta.path.is_ident("remain") {
                 set_kind(&mut kind, FieldKind::Remain)
             } else if meta.path.is_ident("body") {
                 set_kind(&mut kind, FieldKind::Body)
             } else if meta.path.is_ident("range") {
                 set_kind(&mut kind, FieldKind::Range)
+            } else if meta.path.is_ident("def_range") {
+                set_kind(&mut kind, FieldKind::DefRange)
+            } else if meta.path.is_ident("type_range") {
+                set_kind(&mut kind, FieldKind::TypeRange)
             } else if meta.path.is_ident("optional") {
                 optional = true;
                 Ok(())
             } else {
                 Err(meta.error(
                     "unknown #[hcl(...)] argument; expected one of \
-                     attr, block, label, remain, body, range, optional",
+                     attr, block, label, remain, body, range, label_range, \
+                     def_range, type_range, attr_range, attr_name_range, \
+                     attr_value_range, optional",
                 ))
             }
         })?;
