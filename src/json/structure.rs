@@ -13,7 +13,7 @@ use crate::eval_context::EvalContext;
 use crate::pos::Range;
 use crate::schema::BodySchema;
 use crate::structure as hcl_structure;
-use crate::structure::{BodyContent, BodyRef};
+use crate::structure::{BodyContent, BodyRef, ExprRef};
 use crate::traversal::Traversal;
 
 use super::ast::Node;
@@ -78,5 +78,17 @@ impl hcl_structure::Expression for Expression {
 
     fn as_any(&self) -> &dyn Any {
         self
+    }
+
+    // (json: `expression.AsTraversal`, the `hcl.AbsTraversalForExpr`
+    // optional interface: a string containing native traversal syntax.)
+    fn as_traversal(&self) -> Option<Traversal> {
+        todo!()
+    }
+
+    // (json: `expression.ExprList`, the `hcl.ExprList` optional interface:
+    // an array value's elements as expressions.)
+    fn expr_list(&self) -> Option<Vec<ExprRef>> {
+        todo!()
     }
 }
