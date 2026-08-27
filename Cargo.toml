@@ -1,5 +1,8 @@
 [workspace]
 # Own workspace: this repo is independent of the terraform-rewrite workbench it sits inside.
+# The root `hcl` package is an implicit member; `hcl-derive` carries the gohcl-style
+# derive macros.
+members = ["hcl-derive"]
 
 [package]
 name = "hcl"
@@ -23,12 +26,16 @@ publish = false
 #
 # For local development against ../cty, see .cargo/config.toml.example (mise run link-local).
 cty = { git = "https://github.com/DanielMSchmidt/rust-cty" }
+hcl-derive = { path = "hcl-derive" }
 
 [dev-dependencies]
 
 [lints.rust]
 missing_docs = "warn"
 unsafe_code = "deny"
+# Stub phase: every fn body is todo!(), so parameters go unused. Remove once
+# implementations land.
+unused_variables = "allow"
 
 [lints.clippy]
 all = { level = "warn", priority = -1 }
@@ -37,3 +44,199 @@ unimplemented = "allow"
 
 [profile.bench]
 debug = true
+
+# Conformance test targets: one per upstream hcl v2 test area (large upstream
+# files are split into numbered parts), declared explicitly so each compiles
+# independently (cargo auto-discovers only tests/*.rs).
+
+[[test]]
+name = "conformance_pos"
+path = "tests/conformance/pos.rs"
+
+[[test]]
+name = "conformance_pos_scanner"
+path = "tests/conformance/pos_scanner.rs"
+
+[[test]]
+name = "conformance_diagnostic_text"
+path = "tests/conformance/diagnostic_text.rs"
+
+[[test]]
+name = "conformance_merged"
+path = "tests/conformance/merged.rs"
+
+[[test]]
+name = "conformance_ops"
+path = "tests/conformance/ops.rs"
+
+[[test]]
+name = "conformance_traversal_for_expr"
+path = "tests/conformance/traversal_for_expr.rs"
+
+[[test]]
+name = "conformance_hclsyntax_token"
+path = "tests/conformance/hclsyntax_token.rs"
+
+[[test]]
+name = "conformance_hclsyntax_scan_tokens_normal_1"
+path = "tests/conformance/hclsyntax_scan_tokens_normal_1.rs"
+
+[[test]]
+name = "conformance_hclsyntax_scan_tokens_normal_2"
+path = "tests/conformance/hclsyntax_scan_tokens_normal_2.rs"
+
+[[test]]
+name = "conformance_hclsyntax_scan_tokens_normal_3"
+path = "tests/conformance/hclsyntax_scan_tokens_normal_3.rs"
+
+[[test]]
+name = "conformance_hclsyntax_scan_tokens_template"
+path = "tests/conformance/hclsyntax_scan_tokens_template.rs"
+
+[[test]]
+name = "conformance_hclsyntax_parser_1"
+path = "tests/conformance/hclsyntax_parser_1.rs"
+
+[[test]]
+name = "conformance_hclsyntax_parser_2"
+path = "tests/conformance/hclsyntax_parser_2.rs"
+
+[[test]]
+name = "conformance_hclsyntax_parser_3"
+path = "tests/conformance/hclsyntax_parser_3.rs"
+
+[[test]]
+name = "conformance_hclsyntax_parse_traversal"
+path = "tests/conformance/hclsyntax_parse_traversal.rs"
+
+[[test]]
+name = "conformance_hclsyntax_expression_1"
+path = "tests/conformance/hclsyntax_expression_1.rs"
+
+[[test]]
+name = "conformance_hclsyntax_expression_2"
+path = "tests/conformance/hclsyntax_expression_2.rs"
+
+[[test]]
+name = "conformance_hclsyntax_expression_3"
+path = "tests/conformance/hclsyntax_expression_3.rs"
+
+[[test]]
+name = "conformance_hclsyntax_expression_misc"
+path = "tests/conformance/hclsyntax_expression_misc.rs"
+
+[[test]]
+name = "conformance_hclsyntax_expression_template"
+path = "tests/conformance/hclsyntax_expression_template.rs"
+
+[[test]]
+name = "conformance_hclsyntax_expression_static"
+path = "tests/conformance/hclsyntax_expression_static.rs"
+
+[[test]]
+name = "conformance_hclsyntax_structure"
+path = "tests/conformance/hclsyntax_structure.rs"
+
+[[test]]
+name = "conformance_hclsyntax_structure_at_pos"
+path = "tests/conformance/hclsyntax_structure_at_pos.rs"
+
+[[test]]
+name = "conformance_hclsyntax_variables_walk"
+path = "tests/conformance/hclsyntax_variables_walk.rs"
+
+[[test]]
+name = "conformance_json_scanner"
+path = "tests/conformance/json_scanner.rs"
+
+[[test]]
+name = "conformance_json_parser"
+path = "tests/conformance/json_parser.rs"
+
+[[test]]
+name = "conformance_json_public"
+path = "tests/conformance/json_public.rs"
+
+[[test]]
+name = "conformance_json_structure_1"
+path = "tests/conformance/json_structure_1.rs"
+
+[[test]]
+name = "conformance_json_structure_2"
+path = "tests/conformance/json_structure_2.rs"
+
+[[test]]
+name = "conformance_hcldec_decode"
+path = "tests/conformance/hcldec_decode.rs"
+
+[[test]]
+name = "conformance_hcldec_spec"
+path = "tests/conformance/hcldec_spec.rs"
+
+[[test]]
+name = "conformance_hclwrite_ast"
+path = "tests/conformance/hclwrite_ast.rs"
+
+[[test]]
+name = "conformance_hclwrite_ast_body_1"
+path = "tests/conformance/hclwrite_ast_body_1.rs"
+
+[[test]]
+name = "conformance_hclwrite_ast_body_2"
+path = "tests/conformance/hclwrite_ast_body_2.rs"
+
+[[test]]
+name = "conformance_hclwrite_format"
+path = "tests/conformance/hclwrite_format.rs"
+
+[[test]]
+name = "conformance_hclwrite_generate"
+path = "tests/conformance/hclwrite_generate.rs"
+
+[[test]]
+name = "conformance_hclwrite_parser"
+path = "tests/conformance/hclwrite_parser.rs"
+
+[[test]]
+name = "conformance_hclwrite_round_trip"
+path = "tests/conformance/hclwrite_round_trip.rs"
+
+[[test]]
+name = "conformance_gohcl"
+path = "tests/conformance/gohcl.rs"
+
+[[test]]
+name = "conformance_hcltest_mock"
+path = "tests/conformance/hcltest_mock.rs"
+
+[[test]]
+name = "conformance_hclsimple"
+path = "tests/conformance/hclsimple.rs"
+
+[[test]]
+name = "conformance_integrationtest"
+path = "tests/conformance/integrationtest.rs"
+
+[[test]]
+name = "conformance_ext_dynblock"
+path = "tests/conformance/ext_dynblock.rs"
+
+[[test]]
+name = "conformance_ext_typeexpr_get_type"
+path = "tests/conformance/ext_typeexpr_get_type.rs"
+
+[[test]]
+name = "conformance_ext_typeexpr_defaults"
+path = "tests/conformance/ext_typeexpr_defaults.rs"
+
+[[test]]
+name = "conformance_ext_typeexpr_misc"
+path = "tests/conformance/ext_typeexpr_misc.rs"
+
+[[test]]
+name = "conformance_ext_misc"
+path = "tests/conformance/ext_misc.rs"
+
+[[test]]
+name = "conformance_specsuite"
+path = "tests/conformance/specsuite.rs"
