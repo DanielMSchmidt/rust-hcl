@@ -240,3 +240,7 @@ path = "tests/conformance/ext_misc.rs"
 [[test]]
 name = "conformance_specsuite"
 path = "tests/conformance/specsuite.rs"
+
+[[test]]
+name = "conformance_hclsyntax_parser_4"
+path = "tests/conformance/hclsyntax_parser_4.rs"
