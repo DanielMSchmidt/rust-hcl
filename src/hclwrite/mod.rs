@@ -105,6 +105,12 @@ impl File {
     pub fn write_to(&self, wr: &mut dyn std::io::Write) -> std::io::Result<u64> {
         todo!()
     }
+
+    /// The file's tokens, for structural assertions (hclwrite: the
+    /// `BuildTokens` mechanism; exposed for conformance).
+    pub fn build_tokens(&self) -> Tokens {
+        todo!()
+    }
 }
 
 impl Default for File {
@@ -360,6 +366,13 @@ pub fn parse_config(src: &[u8], filename: &str, start: Pos) -> (File, Diagnostic
 /// Rewrites the source into a canonical layout without changing meaning;
 /// invalid input is returned verbatim (hclwrite: `hclwrite.Format`).
 pub fn format(src: &[u8]) -> Vec<u8> {
+    todo!()
+}
+
+/// Adjusts the spacing (`spaces_before`) of the given tokens in place, as
+/// the formatter does (hclwrite: unexported `format`; exposed for
+/// conformance).
+pub fn format_tokens(tokens: &mut Tokens) {
     todo!()
 }
 
