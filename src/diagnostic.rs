@@ -42,8 +42,10 @@ pub trait DiagnosticExtra: Any + fmt::Debug {
 }
 
 /// Finds a `T` in the diagnostic's extra value, unwrapping nested extras as
-/// needed (hcl: `hcl.DiagnosticExtra[T]`).
-pub fn diagnostic_extra<T: 'static>(diag: &Diagnostic) -> Option<&T> {
+/// needed; `T` may be a concrete extra type or one of the extra traits
+/// (e.g. `dyn hclsyntax::FunctionCallDiagExtra`), matching Go's interface
+/// query (hcl: `hcl.DiagnosticExtra[T]`).
+pub fn diagnostic_extra<T: ?Sized + 'static>(diag: &Diagnostic) -> Option<&T> {
     todo!()
 }
 
