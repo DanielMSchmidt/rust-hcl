@@ -2,13 +2,15 @@
 
 pub mod ast;
 pub mod scanner;
+pub mod structure;
 
 use crate::diagnostic::Diagnostics;
 use crate::pos::Pos;
-use crate::structure::{Body, ExprRef, Expression, File};
+use crate::structure::{Body as HclBody, ExprRef, Expression as HclExpression, File};
 
 pub use ast::{Node, ObjectAttr};
 pub use scanner::{ScannerPos, Token, TokenType, scan};
+pub use structure::{Body, Expression};
 
 /// Parses the given JSON buffer as an HCL file
 /// (json: `json.Parse`).
@@ -46,13 +48,13 @@ pub fn parse_file(filename: &str) -> (File, Diagnostics) {
 
 /// Whether the given expression was produced by this JSON syntax
 /// (json: `json.IsJSONExpression`).
-pub fn is_json_expression(maybe_json_expr: &dyn Expression) -> bool {
+pub fn is_json_expression(maybe_json_expr: &dyn HclExpression) -> bool {
     todo!()
 }
 
 /// Whether the given body was produced by this JSON syntax
 /// (json: `json.IsJSONBody`).
-pub fn is_json_body(maybe_json_body: &dyn Body) -> bool {
+pub fn is_json_body(maybe_json_body: &dyn HclBody) -> bool {
     todo!()
 }
 
